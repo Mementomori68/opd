@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Экспедиция Уюта — Безопасный ремонт с голограммами</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-main: #f8fafc;
+        --bg-panel: #ffffff;
+        --text-main: #1e293b;
+        --text-muted: #475569;
+        --primary: #1d4ed8;
+        --primary-hover: #1e3a8a;
+        --accent: #ea580c;
+        --accent-hover: #c2410c;
+        --border: #e2e8f0;
+        --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        line-height: 1.6;
+        font-size: 18px;
+    }
+
+    /* --- Скрытие страниц --- */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* --- КНОПКИ --- */
+    .btn {
+        display: inline-block;
+        background-color: var(--accent);
+        color: #fff;
+        padding: 18px 40px;
+        font-size: 20px;
+        font-weight: 800;
+        text-decoration: none;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(234, 88, 12, 0.3);
+    }
+    .btn:hover { background-color: var(--accent-hover); transform: translateY(-2px); }
+    .btn-outline { background: transparent; color: var(--primary); border: 3px solid var(--primary); box-shadow: none; }
+    .btn-outline:hover { background: var(--primary); color: #fff; }
+
+    /* --- ШАПКА --- */
+    header {
+        background: var(--bg-panel);
+        padding: 20px 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .logo { font-size: 26px; font-weight: 900; color: var(--primary); cursor: pointer; }
+    .logo span { color: var(--accent); }
+    
+    nav { display: flex; gap: 30px; align-items: center; }
+    .nav-link {
+        font-size: 18px; font-weight: 700; color: var(--text-main); cursor: pointer;
+        text-decoration: none; transition: color 0.3s;
+    }
+    .nav-link:hover, .nav-link.active { color: var(--accent); }
+
+    /* --- СЕКЦИИ --- */
+    section { padding: 80px 5%; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    
+    .section-title { font-size: 42px; font-weight: 900; text-align: center; margin-bottom: 20px; color: var(--primary); line-height: 1.2; }
+    .section-subtitle { text-align: center; font-size: 20px; color: var(--text-muted); margin-bottom: 60px; max-width: 800px; margin-left: auto; margin-right: auto; }
+
+    /* --- ГЛАВНЫЙ ЭКРАН --- */
+    .hero { display: flex; align-items: center; justify-content: space-between; gap: 50px; background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%); min-height: 80vh; }
+    .hero-content { flex: 1; }
+    .hero h1 { font-size: 56px; font-weight: 900; line-height: 1.1; margin-bottom: 30px; color: var(--primary); }
+    .hero h1 span { color: var(--accent); }
+    .hero p { font-size: 22px; margin-bottom: 40px; color: var(--text-muted); font-weight: 600; }
+    .hero-image { flex: 1; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    .hero-image img { width: 100%; height: auto; display: block; }
+
+    /* --- ПРЕИМУЩЕСТВА --- */
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+    .feature-card { background: var(--bg-panel); padding: 40px 30px; border-radius: 16px; text-align: center; box-shadow: var(--shadow); border: 1px solid var(--border); }
+    .feature-icon { font-size: 60px; margin-bottom: 20px; display: block; }
+    .feature-card h3 { font-size: 24px; margin-bottom: 15px; color: var(--primary); }
+    .feature-card p { font-size: 18px; color: var(--text-muted); }
+
+    /* --- МЕСТО ДЛЯ ВАШИХ ФОТО (ЯРКИЕ БЛОКИ) --- */
+    .photo-placeholder {
+        width: 100%;
+        height: 350px;
+        background-color: #fff7ed; /* Светло-оранжевый фон */
+        border: 4px dashed var(--accent);
+        border-radius: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent);
+        font-weight: 800;
+        font-size: 22px;
+        margin-bottom: 30px;
+        text-align: center;
+        padding: 20px;
+    }
+
+    /* --- СТРАНИЦА "НАШИ РАБОТЫ" (Тарифы) --- */
+    .tariff-card {
+        background: var(--bg-panel);
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+        margin-bottom: 60px;
+        display: flex;
+        gap: 40px;
+        align-items: flex-start;
+    }
+    .tariff-info { flex: 1; }
+    .tariff-info h3 { font-size: 32px; color: var(--primary); margin-bottom: 20px; }
+    .tariff-info p { font-size: 18px; color: var(--text-muted); margin-bottom: 20px; }
+    .tariff-price-box { background: #eff6ff; padding: 20px; border-radius: 12px; margin-bottom: 30px; }
+    .tariff-price { font-size: 28px; font-weight: 900; color: var(--accent); margin-bottom: 5px; }
+    .tariff-price-m2 { font-size: 18px; font-weight: 600; color: var(--primary); }
+    
+    .tariff-photo-area { flex: 1; }
+    
+    /* --- БЛОК БЕСПЛАТНОГО ВЫЕЗДА --- */
+    .free-visit-card {
+        background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
+        color: #fff;
+        border-radius: 20px;
+        padding: 50px;
+        margin-bottom: 60px;
+        display: flex;
+        gap: 40px;
+        align-items: center;
+    }
+    .free-visit-content { flex: 1; }
+    .free-visit-content h3 { font-size: 36px; font-weight: 900; margin-bottom: 20px; }
+    .free-visit-content p { font-size: 20px; opacity: 0.9; margin-bottom: 20px; }
+    .free-visit-photo { flex: 1; }
+    /* Переопределяем стиль для фото на синем фоне */
+    .free-visit-photo .photo-placeholder { background: #ffffff; border-color: #fff; color: var(--primary); }
+
+    /* --- ФОРМА --- */
+    .form-section { background: var(--primary); color: #fff; border-radius: 24px; padding: 60px; display: flex; gap: 60px; box-shadow: 0 25px 50px -12px rgba(29, 78, 216, 0.4); }
+    .form-content { flex: 1; }
+    .form-content h2 { font-size: 40px; font-weight: 900; margin-bottom: 20px; line-height: 1.2; }
+    .form-content p { font-size: 20px; opacity: 0.9; }
+    .form-box { flex: 1; background: #fff; padding: 40px; border-radius: 16px; }
+    .form-group { margin-bottom: 25px; }
+    .form-group label { display: block; font-size: 18px; color: var(--text-main); font-weight: 600; margin-bottom: 10px; }
+    .form-group input { width: 100%; padding: 18px; font-size: 18px; border: 2px solid var(--border); border-radius: 8px; font-family: 'Montserrat', sans-serif; outline: none; }
+    .form-group input:focus { border-color: var(--primary); }
+    .form-box .btn { width: 100%; }
+
+    /* --- ПОДВАЛ --- */
+    footer { background: #0f172a; color: #94a3b8; padding: 60px 5% 30px; }
+    .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+    .footer-logo { color: #fff; font-size: 28px; font-weight: 900; margin-bottom: 20px; }
+    .footer-logo span { color: var(--accent); }
+    .footer-col h4 { color: #fff; font-size: 20px; margin-bottom: 20px; }
+    .footer-col p, .footer-col a { font-size: 18px; color: #94a3b8; text-decoration: none; display: block; margin-bottom: 10px; }
+    .copyright { text-align: center; padding-top: 20px; border-top: 1px solid #334155; font-size: 16px; }
+
+    /* --- АДАПТИВ --- */
+    @media (max-width: 992px) {
+        .hero { flex-direction: column; text-align: center; padding-top: 60px; }
+        .features-grid { grid-template-columns: 1fr; }
+        .tariff-card, .free-visit-card, .form-section { flex-direction: column; }
+        .footer-grid { grid-template-columns: 1fr; text-align: center; }
+        .header-contacts { display: none; }
+    }
+</style>
+</head>
+<body>
+
+<!-- ШАПКА -->
+<header>
+    <div class="logo" onclick="showPage('main')">Экспедиция <span>Уюта</span></div>
+    <nav>
+        <a class="nav-link active" onclick="showPage('main')" id="nav-main">Главная</a>
+        <a class="nav-link" onclick="showPage('portfolio')" id="nav-portfolio">Наши работы и тарифы</a>
+        <a href="tel:+74951234567" class="btn" style="padding: 12px 25px; font-size: 18px;">Вызвать мастера</a>
+    </nav>
+</header>
+
+<!-- ========================================== -->
+<!-- СТРАНИЦА 1: ГЛАВНАЯ -->
+<!-- ========================================== -->
+<main id="page-main" class="page active">
+    
+    <!-- ГЛАВНЫЙ ЭКРАН -->
+    <section class="hero">
+        <div class="container" style="display: flex; gap: 50px; align-items: center; flex-wrap: wrap;">
+            <div class="hero-content">
+                <h1>Безопасный ремонт для старшего поколения <span>с 3D-голограммами</span></h1>
+                <p>Мы убираем пороги, ставим поручни и делаем ваш дом безопасным. Показываем результат на голограмме до начала работ!</p>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <a onclick="showPage('portfolio')" class="btn">Посмотреть работы</a>
+                    <a href="#order-form" class="btn btn-outline">Вызвать замерщика</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <!-- ВАШЕ ФОТО: Сюда можно вставить фото уютного дома -->
+                <img src="5.png" style="width: 100%; height: 350px; object-fit: cover; border-radius: 16px; margin-bottom: 30px;">
+            </div>
+        </div>
+    </section>
+
+    <!-- ПРЕИМУЩЕСТВА -->
+    <section>
+        <div class="container">
+            <h2 class="section-title">Почему нам доверяют?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">👵👴</span>
+                    <h3>Забота о каждом</h3>
+                    <p>Крупные кнопки, понятные тексты. Мы объясняем всё простым языком без сложных терминов.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🔮</span>
+                    <h3>Голограмма 3D</h3>
+                    <p>Наш замерщик развернет проекцию новой комнаты прямо на полу. Не нужно надевать очки!</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🛡️</span>
+                    <h3>Полная безопасность</h3>
+                    <p>Противоскользящие полы, удобные поручни, датчики света. Никаких порогов и проводов.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ФОРМА ЗАЯВКИ -->
+    <section id="order-form">
+        <div class="container">
+            <div class="form-section">
+                <div class="form-content">
+                    <h2>Вызвать замерщика с голограммой</h2>
+                    <p>Оставьте свой номер телефона. Мы позвоним, ответим на все вопросы и договоримся о времени приезда. Это абсолютно бесплатно.</p>
+                </div>
+                <div class="form-box">
+                    <form onsubmit="event.preventDefault(); alert('Спасибо! Заявка принята. Мы перезвоним вам в ближайшее время.');">
+                        <div class="form-group">
+                            <label>Ваше имя</label>
+                            <input type="text" placeholder="Например, Иван Иванович" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Номер телефона</label>
+                            <input type="tel" placeholder="+7 (___) ___-__-__" required>
+                        </div>
+                        <button type="submit" class="btn">Отправить заявку</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- ========================================== -->
+<!-- СТРАНИЦА 2: НАШИ РАБОТЫ (ПОРТФОЛИО) -->
+<!-- ========================================== -->
+<main id="page-portfolio" class="page">
+    <section style="padding-top: 60px;">
+        <div class="container">
+            <h2 class="section-title">Примеры наших работ и тарифы</h2>
+            <p class="section-subtitle">Мы показываем реальные результаты ремонта. Ниже вы найдете подробное описание каждого тарифа, цены за квадратный метр и примеры того, как проходит наш бесплатный выезд.</p>
+
+            <!-- БЛОК 1: ПРИМЕР БЕСПЛАТНОГО ВЫЕЗДА -->
+            <div class="free-visit-card">
+                <div class="free-visit-content">
+                    <h3>Как проходит бесплатный выезд</h3>
+                    <p>Наш специалист приезжает к вам с портативным 3D-проектором. Прямо на полу комнаты разворачивается голограмма будущего ремонта. Вы сможете увидеть, как будут выглядеть новые безопасные полы и поручни <b>до того, как мы начнем работу</b>. Замеры и консультация абсолютно бесплатны.</p>
+                    <a href="#order-form" onclick="showPage('main'); setTimeout(() => document.getElementById('order-form').scrollIntoView({behavior:'smooth'}), 100);" class="btn">Записаться на выезд</a>
+                </div>
+                <div class="free-visit-photo">
+                    <!-- ВАШЕ ФОТО: Фото замерщика с голограммой -->
+                    <div class="photo-placeholder">
+                        <img src="1.jpeg" style="width: 100%; height: 350px; object-fit: cover; border-radius: 16px; margin-bottom: 30px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- БЛОК 2: ТАРИФ 1 -->
+            <div class="tariff-card">
+                <div class="tariff-info">
+                    <h3>Пакет «Безопасная ванная»</h3>
+                    <p>Полная адаптация ванной комнаты для пожилого человека. Мы демонтируем старую скользкую плитку и укладываем противоскользящее покрытие. Заменяем высокий бортик ванны на удобный душевой поддон. Устанавливаем надежные поручни рядом с унитазом и душем. Добавляем датчики освещения, чтобы ночью не искать выключатель.</p>
+                    
+                    <div class="tariff-price-box">
+                        <div class="tariff-price">Стоимость: от 45 000 ₽</div>
+                        <div class="tariff-price-m2">Цена за м²: от 3 500 ₽/м² (с учетом материалов)</div>
+                    </div>
+                    <a href="#order-form" onclick="showPage('main'); setTimeout(() => document.getElementById('order-form').scrollIntoView({behavior:'smooth'}), 100);" class="btn">Заказать тариф</a>
+                </div>
+                <div class="tariff-photo-area">
+                        <img src="2.jpeg" style="width: 100%; height: 350px; object-fit: cover; border-radius: 16px; margin-bottom: 30px;">
+                </div>
+            </div>
+
+            <!-- БЛОК 3: ТАРИФ 2 -->
+            <div class="tariff-card">
+                <div class="tariff-info">
+                    <h3>Пакет «Дом без порогов»</h3>
+                    <p>Идеальное решение для тех, кто использует ходунки или инвалидную коляску. Мы выравниваем полы во всей квартире или доме, убирая все перепады высот. Демонтируем пороги между комнатами, на балконе и в санузле. Устанавливаем широкие дверные проемы, чтобы можно было свободно проехать.</p>
+                    
+                    <div class="tariff-price-box">
+                        <div class="tariff-price">Стоимость: от 30 000 ₽</div>
+                        <div class="tariff-price-m2">Цена за м²: от 1 200 ₽/м² (работа + выравнивание)</div>
+                    </div>
+                    <a href="#order-form" onclick="showPage('main'); setTimeout(() => document.getElementById('order-form').scrollIntoView({behavior:'smooth'}), 100);" class="btn">Заказать тариф</a>
+                </div>
+                <div class="tariff-photo-area">
+                        <img src="3.jpeg" style="width: 100%; height: 350px; object-fit: cover; border-radius: 16px; margin-bottom: 30px;">
+                </div>
+            </div>
+            
+            <!-- БЛОК 4: ТАРИФ 3 -->
+            <div class="tariff-card">
+                <div class="tariff-info">
+                    <h3>Пакет «Умный дом для пожилых»</h3>
+                    <p>Комплексная установка систем безопасности. Мы монтируем датчики падения, кнопки экстренного вызова (в виде браслета), умные розетки и голосовое управление светом. Все системы интегрируются в один простой пульт с крупными кнопками, который бабушка или дедушка смогут освоить за 5 минут.</p>
+                    
+                    <div class="tariff-price-box">
+                        <div class="tariff-price">Стоимость: от 25 000 ₽</div>
+                        <div class="tariff-price-m2">Цена за м²: рассчитывается индивидуально</div>
+                    </div>
+                    <a href="#order-form" onclick="showPage('main'); setTimeout(() => document.getElementById('order-form').scrollIntoView({behavior:'smooth'}), 100);" class="btn">Заказать тариф</a>
+                </div>
+                <div class="tariff-photo-area">
+                        <img src="4.jpeg" style="width: 100%; height: 350px; object-fit: cover; border-radius: 16px; margin-bottom: 30px;">
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <a onclick="showPage('main')" class="btn btn-outline">Вернуться на главную</a>
+            </div>
+
+        </div>
+    </section>
+</main>
+
+<!-- ПОДВАЛ -->
+<footer>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <div class="footer-logo">Экспедиция <span>Уюта</span></div>
+            <p>Строительно-ремонтная компания для старшего поколения. Делаем дома безопасными и уютными с помощью современных технологий.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Навигация</h4>
+            <a onclick="showPage('main')" style="cursor:pointer;">Главная</a>
+            <a onclick="showPage('portfolio')" style="cursor:pointer;">Наши работы и тарифы</a>
+        </div>
+        <div class="footer-col">
+            <h4>Контакты</h4>
+            <a href="tel:+74951234567">+7 (495) 123-45-67</a>
+            <a href="mailto:info@comfort-exp.ru">info@comfort-exp.ru</a>
+            <p>Москва, ул. Строителей, д. 15</p>
+        </div>
+    </div>
+    <div class="copyright">
+        © 2024 Экспедиция Уюта. Проект группы Б25-702.
+    </div>
+</footer>
+
+<!-- СКРИПТ ДЛЯ ПЕРЕКЛЮЧЕНИЯ ВКЛАДОК -->
+<script>
+    function showPage(pageId) {
+        // Скрываем все страницы
+        document.querySelectorAll('.page').forEach(page => {
+            page.classList.remove('active');
+        });
+        // Убираем активный класс у всех ссылок в меню
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+
+        // Показываем нужную страницу
+        document.getElementById('page-' + pageId).classList.add('active');
+        // Делаем ссылку в меню активной
+        document.getElementById('nav-' + pageId).classList.add('active');
+        
+        // Скроллим наверх при переходе
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
