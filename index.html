@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Экспедиция Уюта — Безопасный ремонт с голограммами</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,13 +29,12 @@
         color: var(--text-main);
         line-height: 1.6;
         font-size: 18px;
+        overflow-x: hidden;
     }
 
-    /* --- Скрытие страниц --- */
     .page { display: none; }
     .page.active { display: block; }
 
-    /* --- КНОПКИ --- */
     .btn {
         display: inline-block;
         background-color: var(--accent);
@@ -50,76 +49,81 @@
         transition: all 0.3s ease;
         text-align: center;
         box-shadow: 0 4px 15px rgba(234, 88, 12, 0.3);
+        -webkit-tap-highlight-color: transparent;
     }
     .btn:hover { background-color: var(--accent-hover); transform: translateY(-2px); }
+    .btn:active { transform: translateY(0); }
     .btn-outline { background: transparent; color: var(--primary); border: 3px solid var(--primary); box-shadow: none; }
     .btn-outline:hover { background: var(--primary); color: #fff; }
 
-    /* --- ШАПКА --- */
     header {
         background: var(--bg-panel);
-        padding: 20px 5%;
+        padding: 15px 5%;
         display: flex;
         justify-content: space-between;
         align-items: center;
         position: sticky;
         top: 0;
-        z-index: 100;
+        z-index: 1000;
         box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
-    .logo { font-size: 26px; font-weight: 900; color: var(--primary); cursor: pointer; }
+    .logo { font-size: 22px; font-weight: 900; color: var(--primary); cursor: pointer; }
     .logo span { color: var(--accent); }
     
-    nav { display: flex; gap: 30px; align-items: center; }
+    .nav-menu { display: flex; gap: 30px; align-items: center; }
     .nav-link {
         font-size: 18px; font-weight: 700; color: var(--text-main); cursor: pointer;
         text-decoration: none; transition: color 0.3s;
     }
     .nav-link:hover, .nav-link.active { color: var(--accent); }
 
-    /* --- СЕКЦИИ --- */
+    .menu-toggle {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        padding: 10px;
+        z-index: 1001;
+    }
+    .menu-toggle span {
+        display: block;
+        width: 28px;
+        height: 3px;
+        background-color: var(--primary);
+        border-radius: 3px;
+        transition: all 0.3s ease;
+    }
+
     section { padding: 80px 5%; }
     .container { max-width: 1200px; margin: 0 auto; }
     
     .section-title { font-size: 42px; font-weight: 900; text-align: center; margin-bottom: 20px; color: var(--primary); line-height: 1.2; }
     .section-subtitle { text-align: center; font-size: 20px; color: var(--text-muted); margin-bottom: 60px; max-width: 800px; margin-left: auto; margin-right: auto; }
 
-    /* --- ГЛАВНЫЙ ЭКРАН --- */
     .hero { display: flex; align-items: center; justify-content: space-between; gap: 50px; background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%); min-height: 80vh; }
     .hero-content { flex: 1; }
     .hero h1 { font-size: 56px; font-weight: 900; line-height: 1.1; margin-bottom: 30px; color: var(--primary); }
     .hero h1 span { color: var(--accent); }
     .hero p { font-size: 22px; margin-bottom: 40px; color: var(--text-muted); font-weight: 600; }
     .hero-image { flex: 1; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-    .hero-image img { width: 100%; height: auto; display: block; }
+    
+    /* --- ОПТИМИЗИРОВАННЫЕ ИЗОБРАЖЕНИЯ --- */
+    .responsive-img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 10; /* Сохраняет пропорции, предотвращает сдвиги макета */
+        object-fit: cover;
+        display: block;
+        border-radius: 16px; /* Вернул скругление из оригинала */
+        margin-bottom: 30px;  /* Вернул отступ из оригинала */
+    }
 
-    /* --- ПРЕИМУЩЕСТВА --- */
     .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
     .feature-card { background: var(--bg-panel); padding: 40px 30px; border-radius: 16px; text-align: center; box-shadow: var(--shadow); border: 1px solid var(--border); }
     .feature-icon { font-size: 60px; margin-bottom: 20px; display: block; }
     .feature-card h3 { font-size: 24px; margin-bottom: 15px; color: var(--primary); }
     .feature-card p { font-size: 18px; color: var(--text-muted); }
 
-    /* --- МЕСТО ДЛЯ ВАШИХ ФОТО (ЯРКИЕ БЛОКИ) --- */
-    .photo-placeholder {
-        width: 100%;
-        height: 350px;
-        background-color: #fff7ed; /* Светло-оранжевый фон */
-        border: 4px dashed var(--accent);
-        border-radius: 16px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        color: var(--accent);
-        font-weight: 800;
-        font-size: 22px;
-        margin-bottom: 30px;
-        text-align: center;
-        padding: 20px;
-    }
-
-    /* --- СТРАНИЦА "НАШИ РАБОТЫ" (Тарифы) --- */
     .tariff-card {
         background: var(--bg-panel);
         border-radius: 20px;
@@ -137,10 +141,8 @@
     .tariff-price-box { background: #eff6ff; padding: 20px; border-radius: 12px; margin-bottom: 30px; }
     .tariff-price { font-size: 28px; font-weight: 900; color: var(--accent); margin-bottom: 5px; }
     .tariff-price-m2 { font-size: 18px; font-weight: 600; color: var(--primary); }
-    
     .tariff-photo-area { flex: 1; }
     
-    /* --- БЛОК БЕСПЛАТНОГО ВЫЕЗДА --- */
     .free-visit-card {
         background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
         color: #fff;
@@ -155,10 +157,7 @@
     .free-visit-content h3 { font-size: 36px; font-weight: 900; margin-bottom: 20px; }
     .free-visit-content p { font-size: 20px; opacity: 0.9; margin-bottom: 20px; }
     .free-visit-photo { flex: 1; }
-    /* Переопределяем стиль для фото на синем фоне */
-    .free-visit-photo .photo-placeholder { background: #ffffff; border-color: #fff; color: var(--primary); }
 
-    /* --- ФОРМА --- */
     .form-section { background: var(--primary); color: #fff; border-radius: 24px; padding: 60px; display: flex; gap: 60px; box-shadow: 0 25px 50px -12px rgba(29, 78, 216, 0.4); }
     .form-content { flex: 1; }
     .form-content h2 { font-size: 40px; font-weight: 900; margin-bottom: 20px; line-height: 1.2; }
@@ -166,11 +165,18 @@
     .form-box { flex: 1; background: #fff; padding: 40px; border-radius: 16px; }
     .form-group { margin-bottom: 25px; }
     .form-group label { display: block; font-size: 18px; color: var(--text-main); font-weight: 600; margin-bottom: 10px; }
-    .form-group input { width: 100%; padding: 18px; font-size: 18px; border: 2px solid var(--border); border-radius: 8px; font-family: 'Montserrat', sans-serif; outline: none; }
+    .form-group input { 
+        width: 100%; 
+        padding: 18px; 
+        font-size: 16px; /* 16px предотвращает авто-зум на iOS */
+        border: 2px solid var(--border); 
+        border-radius: 8px; 
+        font-family: 'Montserrat', sans-serif; 
+        outline: none; 
+    }
     .form-group input:focus { border-color: var(--primary); }
     .form-box .btn { width: 100%; }
 
-    /* --- ПОДВАЛ --- */
     footer { background: #0f172a; color: #94a3b8; padding: 60px 5% 30px; }
     .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
     .footer-logo { color: #fff; font-size: 28px; font-weight: 900; margin-bottom: 20px; }
@@ -179,13 +185,68 @@
     .footer-col p, .footer-col a { font-size: 18px; color: #94a3b8; text-decoration: none; display: block; margin-bottom: 10px; }
     .copyright { text-align: center; padding-top: 20px; border-top: 1px solid #334155; font-size: 16px; }
 
-    /* --- АДАПТИВ --- */
-    @media (max-width: 992px) {
-        .hero { flex-direction: column; text-align: center; padding-top: 60px; }
-        .features-grid { grid-template-columns: 1fr; }
+    /* ========================================= */
+    /* --- АДАПТИВ ПОД ТЕЛЕФОН (до 768px) --- */
+    /* ========================================= */
+    @media (max-width: 768px) {
+        .hero h1 { font-size: 32px; }
+        .hero p { font-size: 18px; }
+        .section-title { font-size: 28px; }
+        .section-subtitle { font-size: 18px; margin-bottom: 40px; }
+        .tariff-info h3 { font-size: 24px; }
+        .free-visit-content h3 { font-size: 28px; }
+        .form-content h2 { font-size: 28px; }
+
+        section { padding: 40px 5%; }
+        .tariff-card, .free-visit-card, .form-section { padding: 30px 20px; }
+
+        .menu-toggle { display: flex; }
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 300px;
+            height: 100vh;
+            background: var(--bg-panel);
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 80px 30px 30px;
+            gap: 25px;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            transition: right 0.3s ease;
+            z-index: 999;
+        }
+        .nav-menu.active { right: 0; }
+        .nav-link { font-size: 20px; width: 100%; }
+        .nav-menu .btn { width: 100%; margin-top: 10px; }
+
+        .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+
+        .hero { flex-direction: column; text-align: center; min-height: auto; padding-top: 40px; gap: 30px; }
+        .hero-content { display: flex; flex-direction: column; align-items: center; }
+        .features-grid { grid-template-columns: 1fr; gap: 20px; }
         .tariff-card, .free-visit-card, .form-section { flex-direction: column; }
-        .footer-grid { grid-template-columns: 1fr; text-align: center; }
-        .header-contacts { display: none; }
+        .footer-grid { grid-template-columns: 1fr; text-align: center; gap: 30px; }
+        
+        .btn { width: 100%; padding: 16px 20px; font-size: 18px; }
+        .hero .btn { width: 100%; }
+        
+        /* Адаптация изображений на мобильных */
+        .responsive-img { 
+            aspect-ratio: 4 / 3; /* Чуть выше на телефонах для лучшей видимости */
+            margin-bottom: 20px; 
+        }
+        
+        .form-section { gap: 30px; }
+        .form-box { padding: 25px; }
+    }
+
+    @media (max-width: 380px) {
+        .hero h1 { font-size: 28px; }
+        .logo { font-size: 20px; }
     }
 </style>
 </head>
@@ -194,10 +255,17 @@
 <!-- ШАПКА -->
 <header>
     <div class="logo" onclick="showPage('main')">Экспедиция <span>Уюта</span></div>
-    <nav>
+    
+    <div class="menu-toggle" onclick="toggleMenu()" aria-label="Открыть меню">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <nav class="nav-menu" id="nav-menu">
         <a class="nav-link active" onclick="showPage('main')" id="nav-main">Главная</a>
         <a class="nav-link" onclick="showPage('portfolio')" id="nav-portfolio">Наши работы и тарифы</a>
-        <a href="tel:+74951234567" class="btn" style="padding: 12px 25px; font-size: 18px;">Вызвать мастера</a>
+        <a href="tel:+74951234567" class="btn" style="padding: 12px 25px; font-size: 16px;">Вызвать мастера</a>
     </nav>
 </header>
 
@@ -206,25 +274,29 @@
 <!-- ========================================== -->
 <main id="page-main" class="page active">
     
-    <!-- ГЛАВНЫЙ ЭКРАН -->
     <section class="hero">
         <div class="container" style="display: flex; gap: 50px; align-items: center; flex-wrap: wrap;">
             <div class="hero-content">
                 <h1>Безопасный ремонт для старшего поколения <span>с 3D-голограммами</span></h1>
                 <p>Мы убираем пороги, ставим поручни и делаем ваш дом безопасным. Показываем результат на голограмме до начала работ!</p>
-                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div style="display: flex; gap: 20px; flex-wrap: wrap; width: 100%; justify-content: center;">
                     <a onclick="showPage('portfolio')" class="btn">Посмотреть работы</a>
                     <a href="#order-form" class="btn btn-outline">Вызвать замерщика</a>
                 </div>
             </div>
             <div class="hero-image">
-                <!-- ВАШЕ ФОТО: Сюда можно вставить фото уютного дома -->
-                <img src="5.png" style="width: 100%; height: 350px; object-fit: cover; border-radius: 16px; margin-bottom: 30px;">
+                <!-- ОПТИМИЗАЦИЯ 5.png: fetchpriority="high" для мгновенной загрузки первого экрана, width/height для предотвращения сдвигов (CLS) -->
+                <img src="5.png" 
+                     alt="Уютный и безопасный дом для пожилого человека" 
+                     class="responsive-img"
+                     width="800" 
+                     height="500" 
+                     fetchpriority="high" 
+                     decoding="async">
             </div>
         </div>
     </section>
 
-    <!-- ПРЕИМУЩЕСТВА -->
     <section>
         <div class="container">
             <h2 class="section-title">Почему нам доверяют?</h2>
@@ -248,7 +320,6 @@
         </div>
     </section>
 
-    <!-- ФОРМА ЗАЯВКИ -->
     <section id="order-form">
         <div class="container">
             <div class="form-section">
@@ -278,12 +349,11 @@
 <!-- СТРАНИЦА 2: НАШИ РАБОТЫ (ПОРТФОЛИО) -->
 <!-- ========================================== -->
 <main id="page-portfolio" class="page">
-    <section style="padding-top: 60px;">
+    <section style="padding-top: 40px;">
         <div class="container">
             <h2 class="section-title">Примеры наших работ и тарифы</h2>
             <p class="section-subtitle">Мы показываем реальные результаты ремонта. Ниже вы найдете подробное описание каждого тарифа, цены за квадратный метр и примеры того, как проходит наш бесплатный выезд.</p>
 
-            <!-- БЛОК 1: ПРИМЕР БЕСПЛАТНОГО ВЫЕЗДА -->
             <div class="free-visit-card">
                 <div class="free-visit-content">
                     <h3>Как проходит бесплатный выезд</h3>
@@ -291,14 +361,11 @@
                     <a href="#order-form" onclick="showPage('main'); setTimeout(() => document.getElementById('order-form').scrollIntoView({behavior:'smooth'}), 100);" class="btn">Записаться на выезд</a>
                 </div>
                 <div class="free-visit-photo">
-                    <!-- ВАШЕ ФОТО: Фото замерщика с голограммой -->
-                    <div class="photo-placeholder">
-                        <img src="1.jpeg" style="width: 100%; height: 350px; object-fit: cover; border-radius: 16px; margin-bottom: 30px;">
-                    </div>
+                    <!-- ОПТИМИЗАЦИЯ: loading="lazy" для экономии трафика -->
+                    <img src="1.jpeg" alt="Замерщик с голограммой" class="responsive-img" width="800" height="600" loading="lazy" decoding="async">
                 </div>
             </div>
 
-            <!-- БЛОК 2: ТАРИФ 1 -->
             <div class="tariff-card">
                 <div class="tariff-info">
                     <h3>Пакет «Безопасная ванная»</h3>
@@ -311,11 +378,10 @@
                     <a href="#order-form" onclick="showPage('main'); setTimeout(() => document.getElementById('order-form').scrollIntoView({behavior:'smooth'}), 100);" class="btn">Заказать тариф</a>
                 </div>
                 <div class="tariff-photo-area">
-                        <img src="2.jpeg" style="width: 100%; height: 350px; object-fit: cover; border-radius: 16px; margin-bottom: 30px;">
+                    <img src="2.jpeg" alt="Безопасная ванная" class="responsive-img" width="800" height="600" loading="lazy" decoding="async">
                 </div>
             </div>
 
-            <!-- БЛОК 3: ТАРИФ 2 -->
             <div class="tariff-card">
                 <div class="tariff-info">
                     <h3>Пакет «Дом без порогов»</h3>
@@ -328,11 +394,10 @@
                     <a href="#order-form" onclick="showPage('main'); setTimeout(() => document.getElementById('order-form').scrollIntoView({behavior:'smooth'}), 100);" class="btn">Заказать тариф</a>
                 </div>
                 <div class="tariff-photo-area">
-                        <img src="3.jpeg" style="width: 100%; height: 350px; object-fit: cover; border-radius: 16px; margin-bottom: 30px;">
+                    <img src="3.jpeg" alt="Дом без порогов" class="responsive-img" width="800" height="600" loading="lazy" decoding="async">
                 </div>
             </div>
             
-            <!-- БЛОК 4: ТАРИФ 3 -->
             <div class="tariff-card">
                 <div class="tariff-info">
                     <h3>Пакет «Умный дом для пожилых»</h3>
@@ -345,7 +410,7 @@
                     <a href="#order-form" onclick="showPage('main'); setTimeout(() => document.getElementById('order-form').scrollIntoView({behavior:'smooth'}), 100);" class="btn">Заказать тариф</a>
                 </div>
                 <div class="tariff-photo-area">
-                        <img src="4.jpeg" style="width: 100%; height: 350px; object-fit: cover; border-radius: 16px; margin-bottom: 30px;">
+                    <img src="4.jpeg" alt="Умный дом для пожилых" class="responsive-img" width="800" height="600" loading="lazy" decoding="async">
                 </div>
             </div>
 
@@ -357,7 +422,6 @@
     </section>
 </main>
 
-<!-- ПОДВАЛ -->
 <footer>
     <div class="footer-grid">
         <div class="footer-col">
@@ -381,26 +445,42 @@
     </div>
 </footer>
 
-<!-- СКРИПТ ДЛЯ ПЕРЕКЛЮЧЕНИЯ ВКЛАДОК -->
 <script>
     function showPage(pageId) {
-        // Скрываем все страницы
         document.querySelectorAll('.page').forEach(page => {
             page.classList.remove('active');
         });
-        // Убираем активный класс у всех ссылок в меню
         document.querySelectorAll('.nav-link').forEach(link => {
             link.classList.remove('active');
         });
 
-        // Показываем нужную страницу
         document.getElementById('page-' + pageId).classList.add('active');
-        // Делаем ссылку в меню активной
-        document.getElementById('nav-' + pageId).classList.add('active');
+        const navLink = document.getElementById('nav-' + pageId);
+        if (navLink) {
+            navLink.classList.add('active');
+        }
         
-        // Скроллим наверх при переходе
+        closeMenu();
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    function toggleMenu() {
+        document.querySelector('.menu-toggle').classList.toggle('active');
+        document.getElementById('nav-menu').classList.toggle('active');
+    }
+
+    function closeMenu() {
+        document.querySelector('.menu-toggle').classList.remove('active');
+        document.getElementById('nav-menu').classList.remove('active');
+    }
+
+    document.addEventListener('click', function(event) {
+        const menu = document.getElementById('nav-menu');
+        const toggle = document.querySelector('.menu-toggle');
+        if (!menu.contains(event.target) && !toggle.contains(event.target) && menu.classList.contains('active')) {
+            closeMenu();
+        }
+    });
 </script>
 
 </body>
